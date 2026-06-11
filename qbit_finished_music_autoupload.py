@@ -92,9 +92,9 @@ def has_music_tag(args: list[str]) -> bool:
 
 def infer_category(path: Path) -> str | None:
     exts = {p.suffix.lower() for p in files_under(path)}
-    if ".flac" in exts:
+    if exts & {".flac", ".ape", ".wav", ".dts", ".mka"}:
         return "18"
-    if ".mp3" in exts:
+    if exts & {".mp3", ".m4a"}:
         return "16"
     return None
 
@@ -171,7 +171,7 @@ def main() -> int:
     stdin_text = category + "\n\n\n\n\n\n"
 
     cmd = [
-        "/home/accofil/venv/bin/python",
+        sys.executable,
         str(BASE / "uploader.py"),
         "--submit",
         str(release),
@@ -194,7 +194,24 @@ def main() -> int:
 
     combined = (proc.stdout or "") + "\n" + (proc.stderr or "")
 
-    if proc.returncode == 0 and "READY TO UPLOAD" in combined and "Feltöltés nem volt sikeres" not in combined:
+    success_markers = [
+        "Feltöltött torrent ID:",
+        "qBittorrentbe hozzáadva:",
+        "nCore torrent letöltve:",
+    ]
+    failure_markers = [
+        "Feltöltés nem volt sikeres",
+        "NOT READY",
+        "Traceback",
+        "ModuleNotFoundError",
+        "ImportError",
+        "A feltöltött torrent már létezik",
+    ]
+
+    success = proc.returncode == 0 and any(m in combined for m in success_markers)
+    failed = any(m in combined for m in failure_markers)
+
+    if success and not failed:
         state.add(key)
         save_state(state)
         log(f"SUCCESS: state-be mentve: {release}")

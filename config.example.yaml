@@ -22,3 +22,15 @@ upload:
   auto_submit: false
   accept_rules: false
   accept_seed: false
+
+
+torrent:
+  announce_url: ""
+
+
+discogs:
+  token: ""
+
+
+auth:
+  cookies_file: "auth/ncore.txt"

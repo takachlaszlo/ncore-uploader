@@ -31,6 +31,10 @@ echo "Discogs token:"
 read DISCOGS
 
 echo
+echo "nCore announce URL / tracker URL:"
+read ANNOUNCE_URL
+
+echo
 echo "qBittorrent URL (pl. http://127.0.0.1:8080):"
 read QB_URL
 
@@ -56,6 +60,7 @@ ENV
 cp config.example.yaml config.yaml
 
 sed -i "s|tmdb_api_key: \"\"|tmdb_api_key: \"$TMDB\"|g" config.yaml
+sed -i "s|announce_url: \"\"|announce_url: \"$ANNOUNCE_URL\"|g" config.yaml
 
 mkdir -p auth browser_profile work
 

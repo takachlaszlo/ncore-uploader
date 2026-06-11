@@ -4,12 +4,21 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
+import os
+from dotenv import load_dotenv
 from datetime import datetime
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent
-LOG = BASE / "work" / "qbit_auto_upload.log"
-STATE = BASE / "work" / "qbit_auto_upload_state.json"
+load_dotenv(BASE / ".env")
+
+PROJECT_BASE = Path(os.getenv("NCORE_UPLOAD_BASE", str(BASE))).expanduser()
+PYTHON_BIN = os.getenv("PYTHON_BIN", sys.executable)
+MUSIC_WATCH_DIR = os.getenv("MUSIC_WATCH_DIR", "")
+QBIT_SAVE_ROOT = os.getenv("QBIT_SAVE_ROOT", "")
+
+LOG = PROJECT_BASE / "work" / "qbit_auto_upload.log"
+STATE = PROJECT_BASE / "work" / "qbit_auto_upload_state.json"
 AUDIO_EXTS = {".mp3", ".flac", ".m4a", ".ape", ".wav", ".dts", ".mka"}
 VIDEO_EXTS = {".mkv", ".mp4", ".avi", ".mov", ".wmv", ".ts", ".m2ts", ".vob", ".iso"}
 
@@ -171,8 +180,8 @@ def main() -> int:
     stdin_text = category + "\n\n\n\n\n\n"
 
     cmd = [
-        sys.executable,
-        str(BASE / "uploader.py"),
+        PYTHON_BIN,
+        str(PROJECT_BASE / "uploader.py"),
         "--submit",
         str(release),
     ]
@@ -181,7 +190,7 @@ def main() -> int:
 
     proc = subprocess.run(
         cmd,
-        cwd=str(BASE),
+        cwd=str(PROJECT_BASE),
         input=stdin_text,
         text=True,
         capture_output=True,

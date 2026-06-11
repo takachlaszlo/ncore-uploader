@@ -3,7 +3,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+from dotenv import load_dotenv
 from pathlib import Path
+
+load_dotenv()
 
 
 AUDIO_EXTS = {".mp3", ".flac"}
@@ -42,7 +46,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument(
         "--root",
-        default="/home/accofil/torrents/qbittorrent/music",
+        default=os.getenv("MUSIC_WATCH_DIR", ""),
         help="qBittorrent root folder",
     )
     ap.add_argument(

@@ -1,36 +1,26 @@
-ncore:
-  base_url: "https://ncore.pro"
-  upload_url: "https://ncore.pro/upload.php"
-  # Playwright persistent profile. First run: login manually, then reuse this folder.
-  browser_profile: "./browser_profile"
-
-paths:
-  work_dir: "./work"
-  torrent_output: "./work/torrents"
-  nfo_output: "./work/nfo"
-  techinfo_output: "./work/techinfo"
-  screenshots_output: "./work/screenshots"
-  images_output: "./work/images"
-
 metadata:
-  # Optional, later used for richer lookup.
   tmdb_api_key: ""
-  musicbrainz_user_agent: "UniversalUploader/0.1 (your_email@example.com)"
 
-upload:
-  # Keep false. Script fills form, then you manually review and submit.
-  auto_submit: false
-  accept_rules: false
-  accept_seed: false
-
-
-torrent:
-  announce_url: ""
-
+spotify:
+  client_id: ""
+  client_secret: ""
 
 discogs:
   token: ""
 
+ncore:
+  upload_url: "https://ncore.pro/upload.php"
+
+torrent:
+  announce_url: ""
 
 auth:
   cookies_file: "auth/ncore.txt"
+
+paths:
+  torrent_output: "work/torrents"
+  nfo_output: "work/nfo"
+  techinfo_output: "work/techinfo"
+  images_output: "work/images"
+  screenshots_output: "work/screenshots"
+  downloaded_torrents: "work/downloaded_torrents"
